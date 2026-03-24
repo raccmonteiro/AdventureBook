@@ -16,6 +16,8 @@
         <module>books-domain</module>
         <module>books-persistence-api</module>
         <module>books-persistence</module>
+        <module>books-svc-api</module>
+        <module>books-svc</module>
     </modules>
 
     <properties>
