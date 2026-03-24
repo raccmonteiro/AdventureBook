@@ -5,23 +5,37 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pictet.adventurebook</groupId>
-        <artifactId>AdventureBook</artifactId>
+        <artifactId>game</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>game</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>game-domain</module>
-        <module>game-persistence-api</module>
-        <module>game-persistence</module>
-        <module>game-persistence-redis</module>
-    </modules>
+    <artifactId>game-persistence-api</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.pictet.adventurebook</groupId>
+            <artifactId>game-domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
