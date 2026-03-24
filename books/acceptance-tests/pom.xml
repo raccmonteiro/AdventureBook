@@ -5,27 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pictet.adventurebook</groupId>
-        <artifactId>AdventureBook</artifactId>
+        <artifactId>books</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>books</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>books-domain</module>
-        <module>books-persistence-api</module>
-        <module>books-persistence</module>
-        <module>books-svc-api</module>
-        <module>books-svc</module>
-        <module>books-web</module>
-        <module>acceptance-tests</module>
-    </modules>
+    <artifactId>acceptance-tests</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

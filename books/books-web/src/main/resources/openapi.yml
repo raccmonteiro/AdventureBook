@@ -1,0 +1,330 @@
+openapi: 3.0.3
+info:
+  title: Adventure Book API
+  description: |-
+    This is the Adventure Book API based on the OpenAPI 3.0 specification.
+  version: 1.0.0
+servers:
+  - url: /api/v1
+
+tags:
+  - name: books
+    description: Public book browsing and reading
+  - name: books-admin
+    description: Admin — book and category management
+
+paths:
+
+  /books:
+    get:
+      tags: [books]
+      summary: Search books
+      operationId: searchBooks
+      parameters:
+        - in: query
+          name: title
+          schema: { type: string }
+        - in: query
+          name: author
+          schema: { type: string }
+        - in: query
+          name: category
+          schema: { type: string }
+        - in: query
+          name: difficulty
+          schema: { type: string, enum: [easy, medium, hard] }
+        - in: query
+          name: page
+          schema: { type: integer, default: 0 }
+        - in: query
+          name: size
+          schema: { type: integer, default: 10 }
+      responses:
+        '200':
+          description: Paginated list of books
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SearchBooksResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags: [books-admin]
+      summary: Upload a new book
+      operationId: uploadBook
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '202':
+          description: File uploaded successfully, processing started
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid file format or missing file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /books/{bookId}:
+    get:
+      tags: [books]
+      summary: Get a book by ID
+      operationId: getBook
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Book found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GetBookResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+  /books/{bookId}/categories:
+    get:
+      tags: [books]
+      summary: Get book categories
+      operationId: getBookCategories
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GetBookCategoriesResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags: [books-admin]
+      summary: Add categories to a book
+      operationId: addBookCategories
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categories:
+                  type: array
+                  minItems: 1
+                  items:
+                    description: categories name
+                    type: string
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GetBookCategoriesResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+  /books/{bookId}/categories/{categoryId}:
+    delete:
+      tags: [books-admin]
+      summary: Remove a category from a book and returns the updated list of categories
+      operationId: removeBookCategory
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of categories after removal
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/GetBookCategoriesResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+components:
+
+  schemas:
+    Book:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        difficulty:
+          type: string
+        categories:
+          type: array
+          minItems: 1
+          items:
+            description: categories name
+            type: string
+
+#GetBook
+    GetBookResponse:
+      type: object
+      properties:
+        book:
+          $ref: '#/components/schemas/Book'
+
+#SearchBooks
+    SearchBooksResponse:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+        pageNumber:
+          type: integer
+        books:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+
+#GetBookCategories
+    GetBookCategoriesResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error context
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          description: Unique identifier for error tracing
