@@ -21,6 +21,7 @@
         <module>common</module>
         <module>books</module>
         <module>game</module>
+        <module>file-importer</module>
     </modules>
 
     <url/>
