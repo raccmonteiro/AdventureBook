@@ -5,79 +5,84 @@ Interactive adventure book platform with JSON-based book import, session managem
 ## Overview
 
 Adventure Book is a multi-module Spring Boot application that enables users to read and play through interactive adventure books.
-The system supports importing books from JSON files, managing game sessions with temporary and persistent storage, and tracking player progression through branching narratives.
+The system supports:
+ - Importing books from JSON files.
+ - Searcing for books by title, author, difficulty, and category.
+ - Editing book categories.
+ - Managing game sessions with temporary and persistent storage,
+ - Navigating through sections by choosing options, and applies consequences based on player choices.
 
 ## Modules
 
 ### Common
 Shared utilities and domain abstractions used across all modules.
 
-- **Result Pattern**: Type-safe error handling with `Result<T>`, `Success<T>`, and `Failure` types
-- **Domain Types**: Base value objects (`Value`, `ComparableValue`) for domain-driven design
-- **Error Handling**: Standardized error codes and types (`ErrorCode`, `ErrorType`, `AppError`)
+- **Result Pattern**: Type-safe error handling with `Result<T>`, `Success<T>`, and `Failure` types.
+- **Error Handling**: Standardized error codes and types (`ErrorCode`, `ErrorType`, `AppError`).
+- **Domain Types**: Base value objects (`Value`, `ComparableValue`) for domain-driven design.
 
 ### Books
 Multi-module service for managing adventure books and their metadata.
 
-- **books-domain**: Domain models (Book, Category, Difficulty, Author)
-- **books-persistence-api**: Repository interfaces for data access abstraction
-- **books-persistence**: PostgreSQL implementation with Spring Data JDBC, full-text search, and Flyway migrations
-- **books-svc-api**: Service interface for book operations
-- **books-svc**: Business logic implementation
-- **books-web**: REST API with OpenAPI specification, Swagger UI, and controllers for book browsing and admin operations
+- **books-domain**: Domain models (Book, Category, Difficulty, Author, Title, and BookStatus).
+- **books-persistence-api**: Repository interfaces for data access abstraction.
+- **books-persistence**: PostgreSQL implementation with Spring Data JDBC, full-text search, and Flyway migrations.
+- **books-svc-api**: Service interface for book operations.
+- **books-svc**: Business logic implementation.
+- **books-web**: REST API with OpenAPI specification, Swagger UI, and controllers for books details, searching and admin operations.
 
 #### API Endpoints
-- `GET /books` - Search books
-- `GET /books/{bookId}` - Retrieve a specific book by ID
 - `POST /api/v1/books` - Create a new book
-- `GET /books/{bookId}/categories` - Get categories for a book by ID
-- `POST /books/{bookId}/categories` - Add categories to a book by ID
-- `DELETE /books/{bookId}/categories/{categoryId}` - Delete a category from a book by ID
+- `GET /api/v1/books` - Search books by title, author, difficulty, and category, with pagination.
+- `GET /api/v1/books/{bookId}` - Retrieve a specific book by ID
+- `GET /api/v1/books/{bookId}/categories` - Get categories for a book by ID
+- `POST /api/v1/books/{bookId}/categories` - Add categories to a book by ID
+- `DELETE /api/v1/books/{bookId}/categories/{categoryId}` - Delete a category from a book by ID
 
 Swagger UI is available at: http://localhost:8080/swagger-ui/index.html
 
 ### Game
 Multi-module service for managing game sessions, reading books, and handling player progression.
 
-- **game-domain**: Domain models (Session, Section, Option, Consequence, PlayerStats, SectionType)
-- **game-persistence-api**: Repository interfaces for session and saved game storage
+- **game-domain**: Domain models (Session, Section, Option, Consequence, SessionState, SectionType, and GameStatus).
+- **game-persistence-api**: Repository interfaces for session and saved game storage.
 - **game-persistence**: Dual storage implementation:
-  - **Redis**: Temporary session storage with 24-hour TTL for active gameplay
-  - **PostgreSQL**: Persistent saved game storage with Spring Data JDBC and Flyway migrations
-- **game-svc**: Business logic for game flow, section navigation, and consequence handling
-- **game-web**: REST API with OpenAPI specification for starting games, choosing options, and saving progress
+  - **Redis**: Temporary session storage with 24-hour TTL for active gameplay.
+  - **PostgreSQL**: Persistent saved game storage with Spring Data JDBC and Flyway migrations.
+- **game-svc**: Business logic for game flow, section navigation, and consequence handling.
+- **game-web**: REST API with OpenAPI specification for starting games, choosing options, and saving progress.
 
 #### Features
-- **Start Game**: Begin reading a book from its BEGIN section
-- **Navigate Sections**: Choose options to jump between sections
-- **Consequence System**: Automatic application of consequences (LOSE_HEALTH, GAIN_HEALTH) based on player choices
-- **Dual Storage**: Active sessions stored in Redis for performance, with manual save to PostgreSQL for persistence
-- **Health Tracking**: Player health is tracked and updated throughout gameplay
+- **Start Game**: Start reading a book from its BEGIN section.
+- **Navigate Sections**: Choose options to jump between sections.
+- **Consequence System**: Automatic application of consequences (LOSE_HEALTH, GAIN_HEALTH) based on player choices.
+- **Dual Storage**: Active sessions stored in Redis for performance, with manual save to PostgreSQL for persistence.
+- **Health Tracking**: Player health is tracked and updated throughout gameplay.
 
 #### API Endpoints
-- `POST /api/v1/game/start` - Start a new game session
-- `POST /api/v1/game/{sessionId}/choose` - Choose an option and move to the next section
-- `POST /api/v1/game/{sessionId}/save` - Save the current game session to persistent storage
+- `POST /api/v1/game/start` - Start a new game session.
+- `POST /api/v1/game/{sessionId}/choose` - Choose an option and move to the next section.
+- `POST /api/v1/game/{sessionId}/save` - Save the current game session to persistent storage.
 
 Swagger UI is available at: http://localhost:8081/swagger-ui/index.html
 
 
 #### Storage Architecture
-- **Redis** (localhost:6379): Stores temporary sessions during active gameplay with 24-hour expiration
-- **PostgreSQL** (localhost:5432): Stores permanently saved games via the `/save` endpoint
+- **Redis** (localhost:6379): Stores temporary sessions during active gameplay with 24-hour expiration.
+- **PostgreSQL** (localhost:5432): Stores permanently saved games via the `/save` endpoint.
 
 ### File Importer
 Batch processing module for importing adventure books from JSON files into the database.
 
-- **Spring Batch Integration**: Multi-step job for book import with validation, insertion, and activation phases
-- **JSON Import**: Reads book definitions from JSON files in the `books-examples/` directory
-- **Validation**: Validates book structure, sections, options, and consequences before import
+- **Spring Batch Integration**: Multi-step job for book import with validation, insertion, and activation phases.
+- **JSON Import**: Reads book definitions from JSON files in the `books-examples/` directory.
+- **Validation**: Validates book structure, sections, options, and consequences before import.
 - **Batch Steps**:
-  1. **Validation**: Verifies JSON structure and data integrity
-  2. **Book Insertion**: Creates book records in the database
-  3. **Section Insertion**: Imports all sections with their metadata
-  4. **Options Insertion**: Imports choices and consequences
-  5. **Book Activation**: Marks books as available for gameplay
+  1. **Validation**: Verifies JSON structure and data integrity.
+  2. **Book Insertion**: Creates book record in the database (with INACTIVE status).
+  3. **Section Insertion**: Imports all sections with their metadata.
+  4. **Options Insertion**: Imports choices and consequences.
+  5. **Book Activation**: Marks books as available for gameplay (ACTIVE status).
 
 #### Example Books
 - `books-examples/crystal-caverns.json`
@@ -100,18 +105,18 @@ Run with: `docker compose up`
 ```mermaid
 erDiagram
     %% Books Module
-    difficulty ||--o{ book : "has"
-    book ||--o{ book_category : "has"
-    category ||--o{ book_category : "belongs to"
-    book ||--o| book_file_content : "stores"
-    book_status ||--o{ book : "has"
+    difficulty ||--o{ book : "is"
+    book ||--o{ book_category : "categorized by"
+    category ||--o{ book_category : ""
+    book ||--o| book_file_content : "has file content"
+    book_status ||--o{ book : "is"
     book ||--o{ section : "contains"
 
     %% Game Module
     section_type ||--o{ section : "has"
-    section ||--o{ option : "has"
-    option ||--o{ consequence : "has"
-    section ||--o{ saved_game : "references"
+    section ||--o{ option : "contains"
+    option ||--o{ consequence : "contains"
+    section ||--o{ saved_game : "used in"
 
     %% Difficulty Catalog
     difficulty {
