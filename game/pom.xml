@@ -18,6 +18,7 @@
         <module>game-persistence-redis</module>
         <module>game-svc-api</module>
         <module>game-svc</module>
+        <module>game-web</module>
     </modules>
 
     <properties>

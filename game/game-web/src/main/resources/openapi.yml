@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  title: Adventure Book Game API
+  description: |-
+    API for reading adventure books and jumping between sections
+  version: 1.0.0
+servers:
+  - url: /api/v1
+
+tags:
+  - name: game
+    description: Read a book and jump between sections
+
+paths:
+
+  /game/start:
+    post:
+      tags: [game]
+      summary: Start reading a book from the beginning
+      operationId: startGame
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartGameRequest'
+      responses:
+        "200":
+          description: Session started with BEGIN section
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSessionResponse'
+        "404":
+          description: Book not found
+
+  /game/{sessionId}/choose:
+    post:
+      tags: [game]
+      summary: Choose an option and jump to next section
+      operationId: chooseOption
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChooseOptionRequest'
+      responses:
+        "200":
+          description: Moved to next section with consequences applied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSessionResponse'
+        "404":
+          description: Session or option not found
+        "400":
+          description: Invalid option for current section
+
+  /game/{sessionId}/save:
+    post:
+      tags: [game]
+      summary: Save the current game session to persistent storage
+      operationId: saveGame
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Game saved successfully
+        "404":
+          description: Session not found
+
+
+components:
+  schemas:
+
+    StartGameRequest:
+      type: object
+      required:
+        - bookId
+      properties:
+        bookId:
+          type: integer
+          format: int64
+
+    GameSessionResponse:
+      type: object
+      required:
+        - sessionId
+        - bookId
+        - currentSection
+        - playerStats
+      properties:
+        sessionId:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum: [WON, LOST, IN_PROGRESS]
+        currentSection:
+          $ref: '#/components/schemas/SectionDto'
+        playerStats:
+          $ref: '#/components/schemas/PlayerStatsDto'
+        consequences:
+          description: Consequences from previous choice
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsequenceDto'
+
+    SectionDto:
+      type: object
+      required:
+        - id
+        - text
+        - type
+      properties:
+        id:
+          type: integer
+          format: int64
+        text:
+          type: string
+        type:
+          type: string
+          enum: [BEGIN, END, NODE]
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionDto'
+
+    OptionDto:
+      type: object
+      required:
+        - id
+        - description
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+
+    ConsequenceDto:
+      type: object
+      required:
+        - type
+        - value
+        - text
+      properties:
+        type:
+          type: string
+        value:
+          type: number
+        text:
+          type: string
+
+    PlayerStatsDto:
+      type: object
+      properties:
+        health:
+          type: number
+          format: double
+
+    ChooseOptionRequest:
+      type: object
+      required:
+        - optionId
+      properties:
+        optionId:
+          type: integer
+          format: int64
