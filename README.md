@@ -100,7 +100,7 @@ Run with: `docker compose up`
 
 ### Database Schema
 
-![DB schema.png](DB%20schema.png)
+Note: In case your editor is not able to render the diagram, you can the the file [DB schema.png](DB%20schema.png) in the project root.
 
 ```mermaid
 erDiagram
@@ -208,9 +208,9 @@ erDiagram
 
 1. Maven compile: `mvn install`
 2. Start infrastructure: `docker compose up`
-3. Import example books using the file-importer batch job
-4. Start the Books service (port 8080): http://localhost:8080/swagger-ui/index.html
-5. Start the Game service (port 8081): http://localhost:8081/swagger-ui/index.html
+3. Books service runs on port 8080: http://localhost:8080/swagger-ui/index.html
+4. Game service runs on port 8081: http://localhost:8081/swagger-ui/index.html
+5. Upload a book via the Books API
 6. Begin playing an adventure book via the Game API
 
 ## Future Features, Enhancements, and Optimizations
