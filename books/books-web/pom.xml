@@ -20,16 +20,15 @@
     <dependencies>
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
+            <artifactId>books-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pictet.adventurebook</groupId>
             <artifactId>books-svc-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>books-svc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.pictet.adventurebook</groupId>
-            <artifactId>books-persistence</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

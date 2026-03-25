@@ -21,22 +21,15 @@
 
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
+            <artifactId>game-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pictet.adventurebook</groupId>
             <artifactId>game-svc-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>game-svc</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.pictet.adventurebook</groupId>
-            <artifactId>game-persistence</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.pictet.adventurebook</groupId>
-            <artifactId>game-persistence-redis</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

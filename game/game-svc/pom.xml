@@ -32,6 +32,14 @@
         </dependency>
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
+            <artifactId>game-persistence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pictet.adventurebook</groupId>
+            <artifactId>game-persistence-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pictet.adventurebook</groupId>
             <artifactId>books-svc-api</artifactId>
         </dependency>
         <dependency>

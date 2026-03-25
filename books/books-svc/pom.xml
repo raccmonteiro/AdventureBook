@@ -26,7 +26,6 @@
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>books-persistence</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
