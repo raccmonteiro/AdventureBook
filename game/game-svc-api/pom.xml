@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.pictet.adventurebook</groupId>
         <artifactId>game</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>game-svc-api</artifactId>
@@ -35,7 +35,6 @@
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>game-domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

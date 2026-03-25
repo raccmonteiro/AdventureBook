@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.pictet.adventurebook</groupId>
         <artifactId>AdventureBook</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>file-importer</artifactId>
@@ -20,7 +20,6 @@
         <dependency>
             <groupId>org.springframework.batch</groupId>
             <artifactId>spring-batch-core</artifactId>
-            <version>6.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

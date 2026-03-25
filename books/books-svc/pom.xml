@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.pictet.adventurebook</groupId>
         <artifactId>books</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>books-svc</artifactId>
@@ -22,23 +22,19 @@
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>books-persistence-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>books-persistence</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>books-domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>books-svc-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -63,7 +59,6 @@
         <dependency>
             <groupId>com.pictet.adventurebook</groupId>
             <artifactId>file-importer</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,8 +68,6 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.21.0</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
