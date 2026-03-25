@@ -14,6 +14,11 @@ The system supports:
 
 ## Modules
 
+The following image shows the high-level architecture of the application.
+
+![modules-diagram.png](docs/modules-diagram.png)
+
+
 ### Common
 Shared utilities and domain abstractions used across all modules.
 
@@ -100,7 +105,7 @@ Run with: `docker compose up`
 
 ### Database Schema
 
-Note: In case your editor is not able to render the diagram, you can the the file [DB schema.png](DB%20schema.png) in the project root.
+Note: In case your editor is not able to render the diagram, you can the the file [db-schema.png](docs/db-schema.png) in the `docs` directory.
 
 ```mermaid
 erDiagram
@@ -240,5 +245,5 @@ Optimizations:
 - **Batch Processing**: Batch processing of book imports should run outside of ApplicationContext. It could run using an AWS Lambda function.
 - **Caching**: Implement caching for frequently accessed book data to reduce database load and improve response times.
 - **Elasctic Search**: When Postgres full text search can't handle the load anymore, integrate Elasticsearch for advanced search capabilities and faster retrieval of books based on categories, difficulty, and full-text search. 100% match on title and author.
-- **Split into multiple microservices**: As the application grows, consider splitting the Books and Game modules into separate microservices to improve scalability and maintainability. This would allow each service to be developed, deployed, and scaled independently based on its specific needs. See the following design: ![AdventureBook system design.png](AdventureBook%20system%20design.png)
+- **Split into multiple microservices**: As the application grows, consider splitting the Books and Game modules into separate microservices to improve scalability and maintainability. This would allow each service to be developed, deployed, and scaled independently based on its specific needs. See the following design: ![scalable-system-design.png](docs/scalable-system-design.png)
 
