@@ -52,7 +52,7 @@ Multi-module service for managing game sessions, reading books, and handling pla
 - **game-domain**: Domain models (Session, Section, Option, Consequence, SessionState, SectionType, and GameStatus).
 - **game-persistence-api**: Repository interfaces for session and saved game storage.
 - **game-persistence**: Dual storage implementation:
-  - **Redis**: Temporary session storage with 24-hour TTL for active gameplay.
+  - **Redis**: Temporary session storage with 4-hour TTL for active gameplay.
   - **PostgreSQL**: Persistent saved game storage with Spring Data JDBC and Flyway migrations.
 - **game-svc**: Business logic for game flow, section navigation, and consequence handling.
 - **game-web**: REST API with OpenAPI specification for starting games, choosing options, and saving progress.
