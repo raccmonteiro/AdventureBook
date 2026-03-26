@@ -12,6 +12,29 @@ The system supports:
  - Managing game sessions with temporary and persistent storage,
  - Navigating through sections by choosing options, and applies consequences based on player choices.
 
+## Getting Started
+
+1. Maven compile: `mvn install`
+2. Start infrastructure: `docker compose up`
+3. Books service runs on port 8080: http://localhost:8080/swagger-ui/index.html
+4. Game service runs on port 8081: http://localhost:8081/swagger-ui/index.html
+5. Upload a book via the Books API
+6. Begin playing an adventure book via the Game API
+
+
+## Technologies
+
+- **Java 21** - Programming language
+- **Maven** - Dependency management and build tool
+- **Spring Boot 3** - Application framework
+- **Spring Data JDBC** - Database access and persistence
+- **Spring Batch** - Batch processing for book imports
+- **OpenAPI 3 / Swagger** - API documentation and specification
+- **PostgreSQL** - Persistent database for books and saved games
+- **Redis** - In-memory cache for active game sessions
+- **Flyway** - Database migration management
+- **Docker Compose** - Infrastructure orchestration
+
 ## Modules
 
 The following image shows the high-level architecture of the application.
@@ -208,15 +231,6 @@ erDiagram
         timestamp updated_at
     }
 ```
-
-## Getting Started
-
-1. Maven compile: `mvn install`
-2. Start infrastructure: `docker compose up`
-3. Books service runs on port 8080: http://localhost:8080/swagger-ui/index.html
-4. Game service runs on port 8081: http://localhost:8081/swagger-ui/index.html
-5. Upload a book via the Books API
-6. Begin playing an adventure book via the Game API
 
 ## Future Features, Enhancements, and Optimizations
 
